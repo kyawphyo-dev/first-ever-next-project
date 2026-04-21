@@ -12,7 +12,7 @@ function page() {
             <div className="flex items-center ">
               <SiDevbox className="text-6xl text-blue-600" />
               <h1 className="text-5xl font-bold">
-                <span className="text-blue-600">.dev</span> forum
+                <span className="text-accent">.dev</span> forum
               </h1>
             </div>
             <p className="text-text-muted">
@@ -29,7 +29,7 @@ function page() {
         <div className="w-1/2 flex items-center justify-center p-4">
           <div className="w-full max-w-sm space-y-6  p-8 rounded-lg border border-border">
             <div className="space-y-2 text-center">
-              <h2 className="text-3xl font-bold tracking-tight text-main-text">
+              <h2 className="text-2xl font-bold tracking-tight text-main-text">
                 Join <span className="text-accent">.dev</span> forum
               </h2>
               <p className="text-sm text-text-muted">
