@@ -1,6 +1,5 @@
 import { SiDevbox } from "react-icons/si";
 import AuthForm from "../components/AuthForm";
-
 import Input from "@/components/Input";
 import Button from "@/components/Button";
 
@@ -23,7 +22,7 @@ function page() {
               industry trends.
             </p>
             <Button type="button" style="outline">
-              Create a new account?
+              Already have an account?
             </Button>
           </div>
         </div>
@@ -31,13 +30,19 @@ function page() {
           <div className="w-full max-w-sm space-y-6  p-8 rounded-lg border border-border">
             <div className="space-y-2 text-center">
               <h2 className="text-3xl font-bold tracking-tight text-main-text">
-                Welcome Back!
+                Join <span className="text-accent">.dev</span> forum
               </h2>
               <p className="text-sm text-text-muted">
-                Enter your credentials to access your account
+                Fill in your details to create an account
               </p>
             </div>
             <form className="space-y-4">
+              <div>
+                <Input type="text" placeholder="name" id="name" />
+              </div>
+              <div>
+                <Input type="text" placeholder="username" id="username" />
+              </div>
               <div>
                 <Input type="email" placeholder="email@exaple.com" id="email" />
               </div>
@@ -45,7 +50,7 @@ function page() {
                 <Input type="password" placeholder="password" id="password" />
               </div>
               <Button type="submit" style="normal">
-                Sign In
+                Sign Up
               </Button>
             </form>
             <div className="relative">

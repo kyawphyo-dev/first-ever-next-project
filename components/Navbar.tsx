@@ -2,6 +2,7 @@ import Image from "next/image";
 import logo from "../public/devlogo-removebg.png";
 import Link from "next/link";
 import globe from "../public/globe.svg";
+import Input from "../components/Input";
 function Navbar() {
   return (
     <div className="flex justify-between px-10 py-3 items-center">
@@ -16,14 +17,8 @@ function Navbar() {
           />
         </Link>
       </div>
-      <div>
-        <input
-          type="text"
-          placeholder="Search"
-          className="w-150 bg-input-background px-3 py-2 rounded-md border-border"
-          name=""
-          id=""
-        />
+      <div className="w-150">
+        <Input type="text" placeholder="Search" id="search" />
       </div>
       <div>
         <Image
