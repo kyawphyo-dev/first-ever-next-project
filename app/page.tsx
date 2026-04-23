@@ -1,7 +1,10 @@
+import { auth } from "@/auth";
 import Navbar from "@/components/Navbar";
 import SideBar from "@/components/SideBar";
 
-function page() {
+async function page() {
+  const session = await auth();
+  console.log(session);
   return (
     <>
       <Navbar />
