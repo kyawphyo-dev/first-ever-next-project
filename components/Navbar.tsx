@@ -3,11 +3,12 @@ import logo from "../public/devlogo-removebg.png";
 import Link from "next/link";
 import globe from "../public/globe.svg";
 import Input from "../components/Input";
+import ROUTES from "@/routes";
 function Navbar() {
   return (
     <div className="flex justify-between px-10 py-3 items-center">
       <div>
-        <Link href="/">
+        <Link href={ROUTES.HOME}>
           <Image
             src={logo}
             alt="dev forum"

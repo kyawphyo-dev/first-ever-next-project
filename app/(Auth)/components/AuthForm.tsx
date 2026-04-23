@@ -6,9 +6,9 @@ import { FaGoogle } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
 import { toast } from "react-toastify";
 function AuthForm() {
-  const handleGithubLogin = async () => {
+  const handleLogin = async ({ provider }: { provider: string }) => {
     try {
-      await signIn("github", { redirectTo: "/" });
+      await signIn(provider, { redirectTo: "/" });
     } catch (e) {
       if (e instanceof Error) {
         toast.error("Login failed!" + e.message);
@@ -18,7 +18,12 @@ function AuthForm() {
 
   return (
     <div className="flex space-x-2">
-      <Button type="button" icon={FaGoogle} style="outline">
+      <Button
+        type="button"
+        icon={FaGoogle}
+        style="outline"
+        onClick={() => handleLogin({ provider: "google" })}
+      >
         Google
       </Button>
 
@@ -26,7 +31,7 @@ function AuthForm() {
         type="submit"
         icon={FaGithub}
         style="outline"
-        onClick={handleGithubLogin}
+        onClick={() => handleLogin({ provider: "github" })}
       >
         Github
       </Button>
