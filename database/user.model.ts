@@ -4,12 +4,12 @@ export interface IUser {
   name: string;
   username: string;
   email: string;
-  password: string;
+  password?: string;
   provider?: string;
   providerId?: string;
   bio?: string;
   image?: string;
-  role: string;
+  role?: string;
   location?: string;
   portfolio?: string;
   reputation?: number;
@@ -37,7 +37,6 @@ const UserSchema = new Schema(
     },
     password: {
       type: String,
-      required: true,
     },
     provider: {
       type: String,

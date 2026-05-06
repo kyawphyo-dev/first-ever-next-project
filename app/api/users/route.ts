@@ -1,6 +1,7 @@
 import User from "@/database/user.model";
 import dbConnect from "@/lib/dbConnect";
 import { errorResponse, successResponse } from "@/lib/response";
+import UserSchema from "@/lib/schemas/UserSchema";
 import { NextResponse } from "next/server";
 
 // get all users
@@ -22,21 +23,23 @@ export async function POST(req: Request) {
   try {
     await dbConnect();
     const data = await req.json();
+
     // Validate the data
-    if (!data.name || !data.username || !data.email || !data.password) {
-      throw new Error("Please provide all the fields!");
-    }
-    const existingEmail = await User.findOne({ email: data.email });
+    const validatedData = UserSchema.parse(data);
+
+    const { name, username, email } = validatedData;
+
+    const existingEmail = await User.findOne({ email });
     if (existingEmail) {
       throw new Error("Email already exists!");
     }
-    const existingUsername = await User.findOne({ username: data.username });
+    const existingUsername = await User.findOne({ username });
     if (existingUsername) {
       throw new Error("Username already exists!");
     }
 
     //create User
-    const user = new User(data);
+    const user = new User(validatedData);
     await user.save();
 
     return successResponse(user, 201);
