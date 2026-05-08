@@ -1,7 +1,8 @@
 import User from "@/database/user.model";
 import dbConnect from "@/lib/dbConnect";
 import { errorResponse, successResponse } from "@/lib/response";
-import UserSchema from "@/lib/schemas/UserSchema";
+import { CreateUserSchema } from "@/lib/schemas/UserSchema";
+
 import { NextResponse } from "next/server";
 
 // get all users
@@ -25,7 +26,7 @@ export async function POST(req: Request) {
     const data = await req.json();
 
     // Validate the data
-    const validatedData = UserSchema.parse(data);
+    const validatedData = CreateUserSchema.parse(data);
 
     const { name, username, email } = validatedData;
 
