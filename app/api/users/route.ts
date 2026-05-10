@@ -48,21 +48,3 @@ export async function POST(req: Request) {
     return errorResponse(e, 400);
   }
 }
-
-export async function PUT() {
-  try {
-    return NextResponse.json(
-      {
-        message: "PUT Request",
-      },
-      { status: 200 },
-    );
-  } catch (e) {
-    return NextResponse.json(
-      {
-        message: e instanceof Error ? e.message : "Something went wrong!",
-      },
-      { status: 500 },
-    );
-  }
-}

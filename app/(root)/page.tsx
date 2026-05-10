@@ -3,6 +3,7 @@ import Button from "@/components/Button";
 import ButtonLink from "@/components/ButtonLink";
 import Filter from "@/components/Filter";
 import ThreadCard from "@/components/ThreadCard";
+import { api } from "@/lib/api";
 import ROUTES from "@/routes";
 
 const MOCK_THREADS = [
@@ -60,6 +61,8 @@ async function page({
 }) {
   const session = await auth();
   const { search, filter } = await searchParams;
+  // const users = await api.users.getAll();
+  // console.log(users);
 
   return (
     <div className="p-5 flex flex-col gap-6">
