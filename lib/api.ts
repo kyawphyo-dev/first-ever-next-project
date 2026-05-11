@@ -1,6 +1,7 @@
 import { fetchHandler } from "./fetchHaldler";
 const API_URL = "http://localhost:3000/api";
 export const api = {
+  // User API
   users: {
     // Get all users
     // api.users.getAll()

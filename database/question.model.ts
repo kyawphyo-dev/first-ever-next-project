@@ -8,7 +8,7 @@ export interface IQuestion {
   upvotes: number;
   downvotes: number;
   views: number;
-  answers: Schema.Types.ObjectId[];
+  answers?: Schema.Types.ObjectId[];
 }
 
 export interface IQuestionDoc extends IQuestion, Document {}

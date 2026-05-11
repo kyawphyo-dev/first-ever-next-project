@@ -1,20 +1,20 @@
 import { Schema, Document, models, model } from "mongoose";
 
 export interface ITagQuestion {
-  tag: Schema.Types.ObjectId;
-  question: Schema.Types.ObjectId;
+  tagId: Schema.Types.ObjectId;
+  questionId: Schema.Types.ObjectId;
 }
 
 export interface ITagQuestionDoc extends ITagQuestion, Document {}
 
 const TagQuestionSchema = new Schema(
   {
-    tag: {
+    tagId: {
       type: Schema.Types.ObjectId,
       ref: "Tag",
       required: true,
     },
-    question: {
+    questionId: {
       type: Schema.Types.ObjectId,
       ref: "Question",
       required: true,
@@ -23,7 +23,7 @@ const TagQuestionSchema = new Schema(
   { timestamps: true },
 );
 
-TagQuestionSchema.index({ tag: 1, question: 1 }, { unique: true });
+TagQuestionSchema.index({ tagId: 1, questionId: 1 }, { unique: true });
 
 const TagQuestion =
   models?.TagQuestion ||
