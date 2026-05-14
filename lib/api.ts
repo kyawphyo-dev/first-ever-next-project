@@ -27,6 +27,14 @@ export const api = {
         body: JSON.stringify({ email }),
       }),
 
+    // Get user by provider account ID
+    // api.users.getByProvider("123456")
+    getByProvider: (providerAccountId: string) =>
+      fetchHandler(API_URL + "/users/provider/", {
+        method: "POST",
+        body: JSON.stringify({ providerAccountId }),
+      }),
+
     // Update user by ID
     // api.users.update("123", { name: "Jane Doe", email: "jane@example.com" })
     update: (
@@ -64,7 +72,7 @@ export const api = {
         password?: string;
       };
     }) => {
-      fetchHandler(API_URL + "/auth/signin_with_oauth", {
+      return fetchHandler(API_URL + "/auth/signin_with_oauth", {
         method: "POST",
         body: JSON.stringify({ provider, providerAccountId, user }),
       });

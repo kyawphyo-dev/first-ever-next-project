@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import queryString from "query-string";
 import Input from "../components/Input";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
@@ -13,11 +13,20 @@ function SearchInput() {
 
   const [search, setSearch] = useState(searchParams.get("search") || "");
 
+  // Use a ref to store the latest searchParams to avoid infinite loop
+  const searchParamsRef = useRef(searchParams);
+  useEffect(() => {
+    searchParamsRef.current = searchParams;
+  }, [searchParams]);
+
   // ✅ Create debounced function
   const updateUrl = useMemo(
     () =>
       debounce((value) => {
-        const currentParams = queryString.parse(searchParams.toString());
+        const currentParams = queryString.parse(searchParamsRef.current.toString());
+        const currentSearch = currentParams.search || "";
+
+        if (value === currentSearch) return;
 
         if (value) {
           currentParams.search = value;
@@ -30,7 +39,7 @@ function SearchInput() {
 
         router.replace(url, { scroll: false });
       }, 500),
-    [pathname, router, searchParams],
+    [pathname, router],
   );
 
   // ✅ Call debounced function when search changes

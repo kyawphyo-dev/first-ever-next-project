@@ -6,7 +6,7 @@ export interface IUser {
   email: string;
   password?: string;
   provider?: string;
-  providerId?: string;
+  providerAccountId?: string;
   bio?: string;
   image?: string;
   role?: string;
@@ -41,7 +41,7 @@ const UserSchema = new Schema(
     provider: {
       type: String,
     },
-    providerId: {
+    providerAccountId: {
       type: String,
     },
     image: {

@@ -60,6 +60,7 @@ async function page({
   }>;
 }) {
   const session = await auth();
+  console.log(session);
   const { search, filter } = await searchParams;
   // const users = await api.users.getAll();
   // console.log(users);

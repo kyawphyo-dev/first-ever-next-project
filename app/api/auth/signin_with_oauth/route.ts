@@ -20,7 +20,14 @@ export async function POST(req: Request) {
         providerAccountId,
         user,
       });
-      const { email, name, username, image } = validatedData.user;
+
+      const {
+        provider: vProvider,
+        providerAccountId: vProviderAccountId,
+        user: vUser,
+      } = validatedData;
+      const { email, name, username, image } = vUser;
+
       // check if user exists
       const existingUser = await User.findOne({ email }).session(session);
 
@@ -38,6 +45,8 @@ export async function POST(req: Request) {
                 trim: true,
               }),
               image,
+              provider: vProvider,
+              providerAccountId: vProviderAccountId,
             },
           ],
           { session },
@@ -47,7 +56,7 @@ export async function POST(req: Request) {
         return Response.json({ user: newUser }, { status: 201 });
       } else {
         // update user if user exists
-        await User.updateOne(
+        const updatedUser = await User.findOneAndUpdate(
           {
             _id: existingUser._id,
           },
@@ -55,12 +64,15 @@ export async function POST(req: Request) {
             $set: {
               name,
               image,
+              provider: vProvider,
+              providerAccountId: vProviderAccountId,
             },
           },
-        ).session(session);
+          { new: true, session },
+        );
         // commit transaction
         await session.commitTransaction();
-        return Response.json({ user: existingUser }, { status: 200 });
+        return Response.json({ user: updatedUser }, { status: 200 });
       }
     } catch (error) {
       await session.abortTransaction();
