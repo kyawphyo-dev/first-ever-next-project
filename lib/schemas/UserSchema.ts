@@ -7,7 +7,18 @@ export const CreateUserSchema = z.object({
 
   email: z.string().email("Invalid email address"),
 
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  password: z
+    .string()
+    .min(6, "Password must be at least 6 characters")
+    .optional(),
+  provider: z.string().optional(),
+  providerAccountId: z.string().optional(),
+  image: z.string().optional(),
+  role: z.string().optional(),
+  bio: z.string().optional(),
+  location: z.string().optional(),
+  portfolio: z.string().optional(),
+  reputation: z.number().optional(),
 });
 
 export const UpdateUserSchema = CreateUserSchema.partial();

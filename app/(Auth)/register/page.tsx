@@ -2,6 +2,8 @@ import { SiDevbox } from "react-icons/si";
 import AuthForm from "../components/AuthForm";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
+import ButtonLink from "@/components/ButtonLink";
+import ROUTES from "@/routes";
 
 function page() {
   return (
@@ -21,9 +23,9 @@ function page() {
               and professionals in improving skills and staying updated with
               industry trends.
             </p>
-            <Button type="button" style="outline">
+            <ButtonLink href={ROUTES.LOGIN} style="outline">
               Already have an account?
-            </Button>
+            </ButtonLink>
           </div>
         </div>
         <div className="w-1/2 flex items-center justify-center p-4">
