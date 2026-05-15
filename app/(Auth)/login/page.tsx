@@ -25,9 +25,6 @@ function page() {
               and professionals in improving skills and staying updated with
               industry trends.
             </p>
-            <ButtonLink href={ROUTES.REGISTER} style="outline">
-              Create a new account?
-            </ButtonLink>
           </div>
         </div>
         <div className="w-1/2 flex items-center justify-center p-4">
