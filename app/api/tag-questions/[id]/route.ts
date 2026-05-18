@@ -1,12 +1,13 @@
-import TagQuestion from "@/database/tag-question.model";
+import TagQuestion from "@/database/TagQuestion.model";
 import dbConnect from "@/lib/dbConnect";
 import { errorResponse, successResponse } from "@/lib/response";
-import { TagQuestionSchema } from "@/lib/schemas/Tag-QuestionSchema";
+import { TagQuestionSchema } from "@/lib/schemas/TagQuestionSchema";
 import { Types } from "mongoose";
+import { NextRequest } from "next/server";
 
 // Get specific tag-question relationship by id
 export async function GET(
-  req: Request,
+  req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
@@ -34,7 +35,7 @@ export async function GET(
 // Update specific tag-question relationship
 // Note: Usually rare for junction models; usually you delete and recreate.
 export async function PUT(
-  req: Request,
+  req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
@@ -47,9 +48,13 @@ export async function PUT(
     }
 
     const validatedData = TagQuestionSchema.parse(body);
-    const relationship = await TagQuestion.findByIdAndUpdate(id, validatedData, {
-      new: true,
-    });
+    const relationship = await TagQuestion.findByIdAndUpdate(
+      id,
+      validatedData,
+      {
+        new: true,
+      },
+    );
 
     if (!relationship) {
       throw new Error("Relationship not found");
@@ -63,7 +68,7 @@ export async function PUT(
 
 // Delete specific tag-question relationship
 export async function DELETE(
-  req: Request,
+  req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
@@ -80,7 +85,10 @@ export async function DELETE(
       throw new Error("Relationship not found");
     }
 
-    return successResponse({ message: "Relationship deleted successfully" }, 200);
+    return successResponse(
+      { message: "Relationship deleted successfully" },
+      200,
+    );
   } catch (e) {
     return errorResponse(e, 400);
   }

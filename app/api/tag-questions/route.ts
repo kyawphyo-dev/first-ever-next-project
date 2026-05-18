@@ -1,10 +1,11 @@
-import TagQuestion from "@/database/tag-question.model";
+import TagQuestion from "@/database/TagQuestion.model";
 import dbConnect from "@/lib/dbConnect";
 import { errorResponse, successResponse } from "@/lib/response";
-import { TagQuestionSchema } from "@/lib/schemas/Tag-QuestionSchema";
+import { TagQuestionSchema } from "@/lib/schemas/TagQuestionSchema";
+import { NextRequest } from "next/server";
 
 // Get tag-question relationships
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
   try {
     await dbConnect();
     const { searchParams } = new URL(req.url);
@@ -26,7 +27,7 @@ export async function GET(req: Request) {
 }
 
 // Create tag-question relationship
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
     await dbConnect();
     const body = await req.json();

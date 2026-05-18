@@ -1,8 +1,8 @@
-import { Schema, Document, models, model } from "mongoose";
+import { Schema, Document, models, model, Types } from "mongoose";
 
 export interface ITagQuestion {
-  tagId: Schema.Types.ObjectId;
-  questionId: Schema.Types.ObjectId;
+  tagId: Types.ObjectId | string;
+  questionId: Types.ObjectId | string;
 }
 
 export interface ITagQuestionDoc extends ITagQuestion, Document {}

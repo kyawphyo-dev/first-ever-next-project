@@ -1,9 +1,8 @@
 import { SiDevbox } from "react-icons/si";
 import AuthForm from "../components/AuthForm";
-import Input from "@/components/Input";
-import Button from "@/components/Button";
 import ButtonLink from "@/components/ButtonLink";
 import ROUTES from "@/routes";
+import RegisterForm from "../components/RegisterForm";
 
 function page() {
   return (
@@ -38,23 +37,7 @@ function page() {
                 Fill in your details to create an account
               </p>
             </div>
-            <form className="space-y-4">
-              <div>
-                <Input type="text" placeholder="name" id="name" />
-              </div>
-              <div>
-                <Input type="text" placeholder="username" id="username" />
-              </div>
-              <div>
-                <Input type="email" placeholder="email@exaple.com" id="email" />
-              </div>
-              <div>
-                <Input type="password" placeholder="password" id="password" />
-              </div>
-              <Button type="submit" style="normal">
-                Sign Up
-              </Button>
-            </form>
+            <RegisterForm />
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t border-border"></span>

@@ -34,4 +34,21 @@ const errorResponse = (error: unknown, statu: number) => {
   );
 };
 
-export { successResponse, errorResponse };
+const errorAction = (error: unknown) => {
+  let message =
+    error instanceof Error ? error.message : "Something went wrong!";
+  let details = null;
+
+  if (error instanceof ZodError) {
+    message = "Validation Error";
+    details = error.flatten().fieldErrors;
+  }
+
+  return {
+    success: false as const,
+    message,
+    details,
+  };
+};
+
+export { successResponse, errorResponse, errorAction };

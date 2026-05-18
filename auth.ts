@@ -1,13 +1,61 @@
-import NextAuth from "next-auth";
+import NextAuth, { type DefaultSession } from "next-auth";
 import GitHub from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
 import { api } from "./lib/api";
+import Credentials from "next-auth/providers/credentials";
+import bcrypt from "bcryptjs";
+import { SignInSchema } from "./lib/schemas/SignInSchema";
+
+declare module "next-auth" {
+  interface Session {
+    user: {
+      id: string;
+      username?: string;
+    } & DefaultSession["user"];
+  }
+}
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  providers: [GitHub, Google],
+  providers: [
+    GitHub,
+    Google,
+    Credentials({
+      async authorize(credentials) {
+        const validated = SignInSchema.safeParse(credentials);
+
+        if (validated.success) {
+          const { email, password } = validated.data;
+
+          const response = await api.users.getByEmail(email);
+          if (!response || !response.data) return null;
+
+          const Account = response.data;
+          if (!Account.password) return null;
+
+          const isPasswordCorrect = await bcrypt.compare(
+            password,
+            Account.password,
+          );
+
+          if (isPasswordCorrect) {
+            return {
+              id: Account._id.toString(),
+              name: Account.name,
+              email: Account.email,
+              image: Account.image,
+              username: Account.username,
+            };
+          }
+        }
+
+        return null;
+      },
+    }),
+  ],
+
   callbacks: {
     async signIn({ user, account, profile }) {
-      if (account?.type === "credentials") return false;
+      if (account?.type === "credentials") return true;
       if (!account || !user) return false;
 
       try {
@@ -32,10 +80,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
 
     async jwt({ token, account, user }) {
-      if (!account || !user) return token;
-
-      const userId = user.id as string;
-      if (userId) token.sub = userId;
+      if (user) {
+        token.sub = user.id;
+        token.name = user.name;
+        token.email = user.email;
+        token.image = user.image;
+        if ("username" in user) {
+          token.username = user.username;
+        }
+      }
 
       return token;
     },
@@ -43,6 +96,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async session({ session, token }) {
       if (session.user && token.sub) {
         session.user.id = token.sub;
+        session.user.name = token.name;
+        session.user.email = token.email as string;
+        session.user.image = token.image as string;
+        if (token.username) {
+          session.user.username = token.username as string;
+        }
       }
       return session;
     },

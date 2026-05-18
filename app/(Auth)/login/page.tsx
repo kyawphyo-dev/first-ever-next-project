@@ -1,9 +1,7 @@
 import { SiDevbox } from "react-icons/si";
 import AuthForm from "../components/AuthForm";
-
 import Input from "@/components/Input";
 import Button from "@/components/Button";
-import Link from "next/link";
 import ROUTES from "@/routes";
 import ButtonLink from "@/components/ButtonLink";
 
@@ -25,6 +23,9 @@ function page() {
               and professionals in improving skills and staying updated with
               industry trends.
             </p>
+            <ButtonLink href={ROUTES.REGISTER} style="outline">
+              Don't have an account?
+            </ButtonLink>
           </div>
         </div>
         <div className="w-1/2 flex items-center justify-center p-4">
