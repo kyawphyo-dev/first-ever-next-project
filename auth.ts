@@ -19,24 +19,30 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     GitHub,
     Google,
+    // Credentials provider for manual login
     Credentials({
       async authorize(credentials) {
+        // Validate credentials with Zod
         const validated = SignInSchema.safeParse(credentials);
 
         if (validated.success) {
           const { email, password } = validated.data;
 
+          // Check if user exists
           const response = await api.users.getByEmail(email);
           if (!response || !response.data) return null;
 
+          // Check password
           const Account = response.data;
           if (!Account.password) return null;
 
+          // Compare password with hashed password
           const isPasswordCorrect = await bcrypt.compare(
             password,
             Account.password,
           );
 
+          // Return user if password is correct
           if (isPasswordCorrect) {
             return {
               id: Account._id.toString(),

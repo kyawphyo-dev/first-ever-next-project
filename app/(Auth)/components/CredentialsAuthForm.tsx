@@ -2,9 +2,11 @@
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import { SignUpWithCredentials } from "@/lib/actions/SignUpWithCredentials.action";
+import { SignInWithCredentials } from "@/lib/actions/SignInWithCredentials.action";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 interface Formdata {
   name: string;
@@ -19,7 +21,7 @@ interface FormError {
   email?: string[];
   password?: string[];
 }
-function RegisterForm() {
+function CredentialsAuthForm({ type }: { type: "login" | "register" }) {
   const [formData, setFormData] = useState<Formdata>({
     name: "",
     username: "",
@@ -36,55 +38,72 @@ function RegisterForm() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError({});
+
     // Submit form data to server
-    const result = await SignUpWithCredentials(formData);
+    const action =
+      type === "login" ? SignInWithCredentials : SignUpWithCredentials;
+
+    const result = await action(formData);
+
     if (result.success) {
-      console.log("Success:", result.user);
+      toast.success(`Successfully signed ${type === "login" ? "in" : "up"}`);
       router.push("/");
     } else {
-      if (result.details) {
-        setError(result.details);
+      if ("details" in result && result.details) {
+        setError(result.details as FormError);
       }
 
-      if ("message" in result && result.message === "Email already exists") {
-        setError({ email: [result.message] });
-      }
-
-      if ("message" in result && result.message === "Username already exists") {
-        setError({ username: [result.message] });
+      if ("message" in result && result.message) {
+        const message = result.message;
+        if (message === "Email already exists") {
+          setError((prev) => ({ ...prev, email: [message] }));
+        } else if (message === "Username already exists") {
+          setError((prev) => ({ ...prev, username: [message] }));
+        } else if (message === "Invalid email or password") {
+          setError((prev) => ({
+            ...prev,
+            password: [message],
+          }));
+        } else {
+          toast.error(message);
+        }
       }
     }
   };
   return (
     <form className="space-y-4" onSubmit={handleSubmit}>
-      <div>
-        <Input
-          type="text"
-          placeholder="name"
-          id="name"
-          value={formData.name}
-          onChange={(e) =>
-            setFormData((prev) => ({ ...prev, name: e.target.value }))
-          }
-        />
-        {error?.name && (
-          <p className="text-red-500 text-sm my-1">{error.name[0]}</p>
-        )}
-      </div>
-      <div>
-        <Input
-          type="text"
-          placeholder="username"
-          id="username"
-          value={formData.username}
-          onChange={(e) =>
-            setFormData((prev) => ({ ...prev, username: e.target.value }))
-          }
-        />
-        {error?.username && (
-          <p className="text-red-500 text-sm my-1">{error.username[0]}</p>
-        )}
-      </div>
+      {type === "register" && (
+        <>
+          <div>
+            <Input
+              type="text"
+              placeholder="name"
+              id="name"
+              value={formData.name}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, name: e.target.value }))
+              }
+            />
+            {error?.name && (
+              <p className="text-red-500 text-sm my-1">{error.name[0]}</p>
+            )}
+          </div>
+          <div>
+            <Input
+              type="text"
+              placeholder="username"
+              id="username"
+              value={formData.username}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, username: e.target.value }))
+              }
+            />
+            {error?.username && (
+              <p className="text-red-500 text-sm my-1">{error.username[0]}</p>
+            )}
+          </div>
+        </>
+      )}
       <div>
         <Input
           type="email"
@@ -116,10 +135,10 @@ function RegisterForm() {
         )}
       </div>
       <Button type="submit" style="normal">
-        Sign Up
+        Sign {type === "login" ? "In" : "Up"}
       </Button>
     </form>
   );
 }
 
-export default RegisterForm;
+export default CredentialsAuthForm;

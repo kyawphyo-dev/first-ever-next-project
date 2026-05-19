@@ -2,7 +2,7 @@ import { SiDevbox } from "react-icons/si";
 import AuthForm from "../components/AuthForm";
 import ButtonLink from "@/components/ButtonLink";
 import ROUTES from "@/routes";
-import RegisterForm from "../components/RegisterForm";
+import CredentialsAuthForm from "../components/CredentialsAuthForm";
 
 function page() {
   return (
@@ -37,7 +37,7 @@ function page() {
                 Fill in your details to create an account
               </p>
             </div>
-            <RegisterForm />
+            <CredentialsAuthForm type="register" />
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t border-border"></span>

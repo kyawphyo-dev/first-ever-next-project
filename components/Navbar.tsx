@@ -3,12 +3,14 @@
 import Image from "next/image";
 import logo from "../public/devlogo-removebg.png";
 import Link from "next/link";
-import globe from "../public/globe.svg";
 import SearchInput from "../components/SearchInput";
 import ROUTES from "@/routes";
 import { Suspense, useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
 function Navbar() {
+  const { data: session } = useSession();
+  const user = session?.user;
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
@@ -62,13 +64,15 @@ function Navbar() {
           </Suspense>
         </div>
         <div>
-          <Image
-            src={globe}
-            alt="profile globe"
-            width={40}
-            height={40}
-            className="rounded-full object-cover"
-          />
+          {user && (
+            <Image
+              src={user.image || ""}
+              alt="profile globe"
+              width={40}
+              height={40}
+              className="rounded-full object-cover"
+            />
+          )}
         </div>
       </div>
     </nav>

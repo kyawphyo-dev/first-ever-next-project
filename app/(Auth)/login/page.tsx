@@ -1,9 +1,8 @@
 import { SiDevbox } from "react-icons/si";
 import AuthForm from "../components/AuthForm";
-import Input from "@/components/Input";
-import Button from "@/components/Button";
 import ROUTES from "@/routes";
 import ButtonLink from "@/components/ButtonLink";
+import CredentialsAuthForm from "../components/CredentialsAuthForm";
 
 function page() {
   return (
@@ -38,17 +37,7 @@ function page() {
                 Enter your credentials to access your account
               </p>
             </div>
-            <form className="space-y-4">
-              <div>
-                <Input type="email" placeholder="email@exaple.com" id="email" />
-              </div>
-              <div>
-                <Input type="password" placeholder="password" id="password" />
-              </div>
-              <Button type="submit" style="normal">
-                Sign In
-              </Button>
-            </form>
+            <CredentialsAuthForm type="login" />
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t border-border"></span>

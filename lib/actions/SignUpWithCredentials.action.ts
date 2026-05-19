@@ -56,7 +56,7 @@ export async function SignUpWithCredentials(params: {
           }),
           password: await bcrypt.hash(password, 10),
           provider: "credential",
-          providerAccountId: email,
+          providerAccountId: null,
         },
       ],
       { session },
