@@ -62,7 +62,7 @@ async function page({
   // Check if the user is authenticated in the session
   const session = await auth();
   console.log(session);
-  const { search, filter } = await searchParams;
+  // const { search, filter } = await searchParams;
   // const users = await api.users.getAll();
   // console.log(users);
 

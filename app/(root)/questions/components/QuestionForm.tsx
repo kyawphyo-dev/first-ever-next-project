@@ -1,18 +1,44 @@
 "use client";
 import Editor from "@/components/Editor";
+import { QuestionsCreate } from "@/lib/actions/QuestionsCreate.action";
+import ROUTES from "@/routes";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 function QuestionForm() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     content: "",
     tags: "",
   });
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const router = useRouter();
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form Data Submitted:", formData);
-    // Add your API call here
+    setIsSubmitting(true);
+
+    try {
+      const result = await QuestionsCreate({
+        title: formData.title,
+        content: formData.content,
+        tags: formData.tags
+          .split(",")
+          .map((tag) => tag.trim())
+          .filter((tag) => tag !== ""),
+      });
+      if (result.success && result.data) {
+        toast.success("Question submitted successfully");
+        setFormData({ title: "", content: "", tags: "" });
+        return router.push(ROUTES.QUESTIONS_DETAILS(result.data.id));
+      } else {
+        toast.error(result.message || "Something went wrong");
+      }
+    } catch (e: unknown) {
+      toast.error(e instanceof Error ? e.message : "Unknown error");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -46,7 +72,9 @@ function QuestionForm() {
           type="text"
           placeholder="e.g. How do I center a div in Tailwind CSS?"
           value={formData.title}
-          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+          onChange={(e) =>
+            setFormData((prev) => ({ ...prev, title: e.target.value }))
+          }
           required
           className="bg-input-background border border-border text-main-text rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-accent transition-all duration-200"
         />
@@ -66,7 +94,9 @@ function QuestionForm() {
           type="text"
           placeholder="e.g. react, nextjs, tailwind"
           value={formData.tags}
-          onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
+          onChange={(e) =>
+            setFormData((prev) => ({ ...prev, tags: e.target.value }))
+          }
           className="bg-input-background border border-border text-main-text rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-accent transition-all duration-200"
         />
       </div>
@@ -82,16 +112,17 @@ function QuestionForm() {
         </p>
         <Editor
           value={formData.content}
-          onChange={(v) => setFormData({ ...formData, content: v })}
+          onChange={(v) => setFormData((prev) => ({ ...prev, content: v }))}
         />
       </div>
 
       {/* Submit Button */}
       <button
         type="submit"
-        className="bg-accent hover:bg-hover text-white font-bold py-4 px-6 rounded-lg transition-all duration-200 transform hover:scale-[1.01] active:scale-[0.99] shadow-lg mt-4"
+        disabled={isSubmitting}
+        className="bg-accent hover:bg-hover text-white font-bold py-4 px-6 rounded-lg transition-all duration-200 transform hover:scale-[1.01] active:scale-[0.99] shadow-lg mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        Post Your Question
+        {isSubmitting ? "Posting..." : "Post Your Question"}
       </button>
     </form>
   );

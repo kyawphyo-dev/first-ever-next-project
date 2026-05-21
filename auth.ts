@@ -60,7 +60,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ],
 
   callbacks: {
-    async signIn({ user, account, profile }) {
+    async signIn({ user, account }) {
       if (account?.type === "credentials") return true;
       if (!account || !user) return false;
 
@@ -77,20 +77,28 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         });
 
         if (response && "user" in response) {
+          user.id = response.user._id.toString();
+
+          if ("username" in response.user) {
+            user.username = response.user.username;
+          }
+
           return true;
         }
+
         return false;
       } catch {
         return false;
       }
     },
 
-    async jwt({ token, account, user }) {
+    async jwt({ token, user }) {
       if (user) {
         token.sub = user.id;
         token.name = user.name;
         token.email = user.email;
         token.image = user.image;
+
         if ("username" in user) {
           token.username = user.username;
         }

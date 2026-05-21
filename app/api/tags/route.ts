@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     // Validate the data
     const validatedData = CreateTagSchema.parse(data);
 
-    const { name, description } = validatedData;
+    const { name } = validatedData;
 
     const existingName = await Tag.findOne({ name });
     if (existingName) {
