@@ -80,7 +80,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           user.id = response.user._id.toString();
 
           if ("username" in response.user) {
-            user.username = response.user.username;
+            (user as { username?: string }).username = response.user.username;
           }
 
           return true;

@@ -1,24 +1,50 @@
 "use client";
 import Editor from "@/components/Editor";
+import { IQuestion } from "@/database/question.model";
 import { QuestionsCreate } from "@/lib/actions/QuestionsCreate.action";
+import { QuestionEdit } from "@/lib/actions/QuestionEdit.action";
 import ROUTES from "@/routes";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
-function QuestionForm() {
+function QuestionForm({
+  question,
+  isEdit = false,
+}: {
+  question?: IQuestion;
+  isEdit?: boolean;
+}) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
-    title: "",
-    content: "",
-    tags: "",
+    title: question?.title || "",
+    content: question?.content || "",
+    tags: question?.tags?.map((tag) => tag.name) || [],
   });
   const router = useRouter();
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
+      // Edit question
+      if (isEdit && question) {
+        const result = await QuestionEdit({
+          questionId: question._id.toString(),
+          title: formData.title,
+          content: formData.content,
+          tags: formData.tags,
+        });
+        if (result.success && result.data) {
+          toast.success("Question submitted successfully");
+          setFormData({ title: "", content: "", tags: "" });
+          return router.push(ROUTES.QUESTIONS_DETAILS(result.data.id));
+        }
+        return;
+      }
+
+      // Create question
       const result = await QuestionsCreate({
         title: formData.title,
         content: formData.content,
@@ -122,7 +148,7 @@ function QuestionForm() {
         disabled={isSubmitting}
         className="bg-accent hover:bg-hover text-white font-bold py-4 px-6 rounded-lg transition-all duration-200 transform hover:scale-[1.01] active:scale-[0.99] shadow-lg mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {isSubmitting ? "Posting..." : "Post Your Question"}
+        {isEdit ? "Update Question" : "Post Your Question"}
       </button>
     </form>
   );

@@ -7,7 +7,6 @@ import { CreateQuestionSchema } from "../schemas/QuestionSchema";
 import mongoose from "mongoose";
 import Tag from "@/database/tag.model";
 import TagQuestion from "@/database/TagQuestion.model";
-import User from "@/database/user.model";
 import { api } from "../api";
 
 export async function QuestionsCreate(params: {
