@@ -5,17 +5,17 @@ import { GetQuestion } from "@/lib/actions/GetQuestion.action";
 async function page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   console.log(id);
-  const { data, success } = await GetQuestion({
+
+  const { data: question, success } = await GetQuestion({
     questionId: id,
   });
   if (!success) {
     return notFound();
   }
-  console.log(data);
 
   return (
     <div className="container mx-auto px-4">
-      <QuestionForm question={data} isEdit={true} />
+      <QuestionForm question={question} isEdit={true} />
     </div>
   );
 }
