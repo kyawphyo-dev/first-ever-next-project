@@ -40,7 +40,7 @@ const errorAction = (error: unknown) => {
   let details = null;
 
   if (error instanceof ZodError) {
-    message = "Validation Error";
+    message = error.message;
     details = error.flatten().fieldErrors;
   }
 

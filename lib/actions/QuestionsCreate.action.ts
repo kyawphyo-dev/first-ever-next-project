@@ -1,6 +1,6 @@
 "use server";
 import { auth } from "@/auth";
-import Question from "@/database/question.model";
+import Question, { IQuestion } from "@/database/question.model";
 import dbConnect from "@/lib/dbConnect";
 import { errorAction } from "../response";
 import { CreateQuestionSchema } from "../schemas/QuestionSchema";
@@ -16,13 +16,7 @@ export async function QuestionsCreate(params: {
 }): Promise<{
   success: boolean;
   message?: string;
-  data?: {
-    id: string;
-    title: string;
-    content: string;
-    tags: string[];
-    author: mongoose.Types.ObjectId;
-  };
+  data?: IQuestion;
 }> {
   // 1. validate data with zod
   const validated = CreateQuestionSchema.safeParse(params);

@@ -14,5 +14,3 @@ export const EditQuestionSchema = z.object({
     .max(5, { message: "Maximum 5 tags are allowed" }),
   questionId: z.string(),
 });
-
-export const UpdateQuestionSchema = EditQuestionSchema.partial();
