@@ -4,6 +4,7 @@ interface ITag {
   _id: string;
   name: string;
 }
+
 export interface IQuestion {
   title: string;
   content: string;
