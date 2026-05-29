@@ -77,7 +77,10 @@ async function page({
   });
   console.log(success, data);
   console.log(message);
+
   const questions: IPopulatedAll[] = data?.questions || [];
+  // isNext is reserved for future pagination implementation
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const isNext = data?.isNext || false;
   return (
     <div className="p-5 flex flex-col gap-6">
