@@ -3,8 +3,9 @@
 import Question, { IQuestionDoc } from "@/database/question.model";
 import dbConnect from "../dbConnect";
 import PaginateSearchParamSchema from "../schemas/PaginateSearchParams";
-import mongoose from "mongoose";
+import mongoose, { SortOrder } from "mongoose";
 import { errorAction } from "../response";
+import Tag from "@/database/tag.model";
 
 export async function GetQuestions(params: {
   page?: number;
@@ -33,7 +34,7 @@ export async function GetQuestions(params: {
 
   const skip = Number((page - 1) * pageSize); // skip documents
   const limit = Number(pageSize);
-  const filterQuery: mongoose.FilterQuery<IQuestionDoc> = {};
+  const filterQuery: Record<string, unknown> = {};
 
   //implement later on
   if (filter === "recommended") {
@@ -41,15 +42,22 @@ export async function GetQuestions(params: {
   }
 
   if (search) {
+    const regex = new RegExp(search, "i");
+
+    const matchedTags = await Tag.find({
+      name: { $regex: regex },
+    }).select("_id");
+
+    const tagIds = matchedTags.map((tag) => tag._id);
+
     filterQuery.$or = [
-      { title: { $regex: new RegExp(search, "i") } },
-      { content: { $regex: new RegExp(search, "i") } },
+      { title: { $regex: regex } },
+      { content: { $regex: regex } },
+      { tags: { $in: tagIds } },
     ];
   }
 
-  let sortCriteria: Record<string, 1 | -1> = {
-    createdAt: -1,
-  };
+  let sortCriteria: Record<string, SortOrder>;
 
   switch (filter) {
     case "newest":
@@ -72,6 +80,7 @@ export async function GetQuestions(params: {
     const questions = await Question.find(filterQuery)
       .populate("tags", "name")
       .populate("author", "name image")
+      .populate("answers", "author content upvotes downvotes")
       .lean()
       .sort(sortCriteria)
       .skip(skip)
