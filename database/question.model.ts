@@ -5,6 +5,19 @@ interface ITag {
   name: string;
 }
 
+export interface IAnswer {
+  author: Schema.Types.ObjectId;
+  question: Schema.Types.ObjectId;
+  content: string;
+  upvotes: number;
+  downvotes: number;
+}
+
+export interface IAuthor {
+  name: string;
+  image?: string;
+}
+
 export interface IQuestion {
   title: string;
   content: string;
@@ -14,10 +27,30 @@ export interface IQuestion {
   downvotes: number;
   views: number;
   answers?: Schema.Types.ObjectId[];
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface IQuestionPopulated extends Omit<IQuestion, "tags"> {
   tags: ITag[];
+}
+export interface IAnswerPopulated extends Omit<IQuestion, "answers"> {
+  answer: IAnswer[];
+}
+
+export interface IAuthorPopulated extends Omit<IQuestion, "author"> {
+  author: IAuthor[];
+}
+
+export interface IPopulatedAll extends Omit<
+  IQuestion,
+  "tags" | "author" | "answers"
+> {
+  tags: ITag[];
+
+  author: Pick<IAuthor, "name" | "image">;
+
+  answers: Pick<IAnswer, "author" | "content" | "upvotes" | "downvotes">[];
 }
 
 export interface IQuestionDoc extends IQuestion, Document {}
