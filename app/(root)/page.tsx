@@ -1,11 +1,10 @@
 import { auth } from "@/auth";
-import Button from "@/components/Button";
 import ButtonLink from "@/components/ButtonLink";
+import DataRenderer from "@/components/DataRenderer";
 import Filter from "@/components/Filter";
 import ThreadCard from "@/components/ThreadCard";
-import { IQuestionDoc } from "@/database/question.model";
+import { IPopulatedAll } from "@/database/question.model";
 import { GetQuestions } from "@/lib/actions/GetQuestions.action";
-import { api } from "@/lib/api";
 import ROUTES from "@/routes";
 
 // const MOCK_THREADS = [
@@ -62,7 +61,8 @@ async function page({
     search?: string;
     filter?: string;
     sort?: string;
-    question?: IQuestionDoc;
+    isNext: boolean;
+    question: IPopulatedAll;
   }>;
 }) {
   // Check if the user is authenticated in the session
@@ -77,7 +77,8 @@ async function page({
   });
   console.log(success, data);
   console.log(message);
-  const { questions, isNext } = data || {};
+  const questions: IPopulatedAll[] = data?.questions || [];
+  const isNext = data?.isNext || false;
   return (
     <div className="p-5 flex flex-col gap-6">
       <div className="flex justify-between items-center">
@@ -88,19 +89,14 @@ async function page({
       </div>
       <Filter />
 
-      {success && data ? (
-        questions?.length ? (
-          <div className="flex flex-col gap-4">
-            {questions?.map((question, i) => (
-              <ThreadCard key={i} {...question} />
-            ))}
-          </div>
-        ) : (
-          <div className="text-center text-text-muted">No result found</div>
-        )
-      ) : (
-        <div className="text-center text-text-muted">No threads found</div>
-      )}
+      <DataRenderer
+        success={success}
+        data={questions}
+        errorMessage={message}
+        render={(questions) =>
+          questions.map((question, i) => <ThreadCard key={i} {...question} />)
+        }
+      />
     </div>
   );
 }

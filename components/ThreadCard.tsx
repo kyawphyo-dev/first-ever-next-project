@@ -3,7 +3,7 @@ import Link from "next/link";
 import { FaRegComment } from "react-icons/fa";
 import { AiOutlineLike } from "react-icons/ai";
 import { MdOutlineVisibility } from "react-icons/md";
-import { IQuestionDoc } from "@/database/question.model";
+import { IPopulatedAll, IQuestionDoc } from "@/database/question.model";
 
 // interface ThreadCardProps {
 //   title: string;
@@ -20,9 +20,9 @@ import { IQuestionDoc } from "@/database/question.model";
 //   };
 // }
 
-function ThreadCard(question: IQuestionDoc) {
+function ThreadCard(question: IPopulatedAll) {
   return (
-    <div className="bg-primary/20 border border-border rounded-xl p-6 hover:border-secondary transition-all">
+    <div className="bg-primary/20 border border-border rounded-xl p-6 hover:border-secondary transition-all my-3">
       <div className="flex flex-col gap-4">
         {/* Title */}
         <Link href="/">
@@ -33,7 +33,7 @@ function ThreadCard(question: IQuestionDoc) {
 
         {/* Tags */}
         <div className="flex flex-wrap gap-2">
-          {question?.tags.map((tag, i) => (
+          {question?.tags?.map((tag, i) => (
             <span
               key={i}
               className="px-3 py-1 text-xs font-medium rounded-full bg-input-background text-secondary-text border border-border"
@@ -79,7 +79,7 @@ function ThreadCard(question: IQuestionDoc) {
             </div>
             <div className="flex items-center gap-1 hover:text-success transition-colors cursor-pointer">
               <FaRegComment className="text-md" />
-              <span className="text-sm">{question?.answers}</span>
+              <span className="text-sm">{question?.answers?.length}</span>
             </div>
             <div className="flex items-center gap-1 hover:text-warning transition-colors cursor-pointer">
               <MdOutlineVisibility className="text-lg" />
