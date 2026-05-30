@@ -3,7 +3,7 @@
 import Question, { IQuestionDoc } from "@/database/question.model";
 import dbConnect from "../dbConnect";
 import PaginateSearchParamSchema from "../schemas/PaginateSearchParams";
-import mongoose, { SortOrder } from "mongoose";
+import { SortOrder } from "mongoose";
 import { errorAction } from "../response";
 import Tag from "@/database/tag.model";
 

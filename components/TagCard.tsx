@@ -9,22 +9,28 @@ function TagCard({ tag }: TagCardProps) {
   return (
     <Link
       href={`/tags/${tag._id}`}
-      className="block border border-border rounded-xl p-5 hover:bg-hover transition-all duration-200"
+      className="group flex items-center justify-between rounded-xl border border-border bg-card p-4 transition-all hover:border-primary hover:bg-hover"
     >
-      <div className="flex items-start justify-between">
+      <div className="flex items-center gap-4">
+        <img
+          alt={tag.name}
+          width={40}
+          height={40}
+          className="h-10 w-10"
+          src={`https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${tag.name.toLowerCase()}/${tag.name.toLowerCase()}-original.svg`}
+        />
+
         <div>
-          <h3 className="inline-block px-3 py-1 rounded-md bg-secondary text-white text-sm font-medium">
+          <h3 className="font-semibold text-white group-hover:text-primary">
             {tag.name}
           </h3>
 
-          <p className="text-secondary mt-3 text-sm max-w-md">
-            {tag.description || "No description available."}
-          </p>
+          <p className="text-sm text-accent">{tag.questions || 0} questions</p>
         </div>
+      </div>
 
-        <div className="text-xs text-secondary bg-input-background px-3 py-1 rounded-full">
-          {tag.questions || 0} Questions
-        </div>
+      <div className="rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
+        #{tag.name}
       </div>
     </Link>
   );

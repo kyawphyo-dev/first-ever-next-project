@@ -62,7 +62,7 @@ async function page({
     filter?: string;
     sort?: string;
     isNext: boolean;
-    question: IPopulatedAll;
+    question: IPopulatedAll[];
   }>;
 }) {
   // Check if the user is authenticated in the session
