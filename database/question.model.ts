@@ -19,6 +19,7 @@ export interface IAuthor {
 }
 
 export interface IQuestion {
+  _id: string;
   title: string;
   content: string;
   tags: Schema.Types.ObjectId[];
@@ -53,7 +54,7 @@ export interface IPopulatedAll extends Omit<
   answers: Pick<IAnswer, "author" | "content" | "upvotes" | "downvotes">[];
 }
 
-export interface IQuestionDoc extends IQuestion, Document {}
+export interface IQuestionDoc extends Omit<IQuestion, "_id">, Document {}
 
 const QuestionSchema = new Schema<IQuestionDoc>(
   {

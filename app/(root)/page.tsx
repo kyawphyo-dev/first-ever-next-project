@@ -6,6 +6,7 @@ import ThreadCard from "@/components/ThreadCard";
 import { IPopulatedAll } from "@/database/question.model";
 import { GetQuestions } from "@/lib/actions/GetQuestions.action";
 import ROUTES from "@/routes";
+import { notFound } from "next/navigation";
 
 // const MOCK_THREADS = [
 //   {
@@ -75,8 +76,9 @@ async function page({
     search,
     filter,
   });
-  console.log(success, data);
-  console.log(message);
+  // if (!success || !data) {
+  //   return notFound();
+  // }
 
   const questions: IPopulatedAll[] = data?.questions || [];
   // isNext is reserved for future pagination implementation

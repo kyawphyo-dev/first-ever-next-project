@@ -4,7 +4,7 @@ import { GetQuestion } from "@/lib/actions/GetQuestion.action";
 
 async function page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  console.log(id);
+  // console.log(id);
 
   const { data: question, success } = await GetQuestion({
     questionId: id,
