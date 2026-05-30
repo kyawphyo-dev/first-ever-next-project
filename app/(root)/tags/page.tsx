@@ -37,7 +37,7 @@ async function page({
         errorMessage={message}
         render={(tags) => {
           return (
-            <div className="flex flex-wrap justify-between gap-2">
+            <div className="grid grid-cols-3 gap-2">
               {tags.map((tag) => (
                 <TagCard key={tag._id.toString()} tag={tag} />
               ))}

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { FaRegComment } from "react-icons/fa";
 import { AiOutlineLike } from "react-icons/ai";
 import { MdOutlineVisibility } from "react-icons/md";
-import { IPopulatedAll, IQuestionDoc } from "@/database/question.model";
+import { IPopulatedAll } from "@/database/question.model";
 
 // interface ThreadCardProps {
 //   title: string;
