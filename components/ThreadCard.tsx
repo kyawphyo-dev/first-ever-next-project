@@ -4,6 +4,9 @@ import { FaRegComment } from "react-icons/fa";
 import { AiOutlineLike } from "react-icons/ai";
 import { MdOutlineVisibility } from "react-icons/md";
 import { IPopulatedAll } from "@/database/question.model";
+import { BiDislike } from "react-icons/bi";
+
+import ROUTES from "@/routes";
 
 // interface ThreadCardProps {
 //   title: string;
@@ -23,7 +26,7 @@ import { IPopulatedAll } from "@/database/question.model";
 function ThreadCard(question: IPopulatedAll) {
   return (
     <div className="bg-primary/20 border border-border rounded-xl p-6 hover:border-secondary transition-all my-3">
-      <Link href={`/questions/${question._id}`}>
+      <Link href={ROUTES.QUESTION_DETAILS(question._id)}>
         <div className="flex flex-col gap-4">
           {/* Title */}
           <h3 className="text-xl font-bold text-main-text hover:text-accent transition-colors">
@@ -75,6 +78,10 @@ function ThreadCard(question: IPopulatedAll) {
               <div className="flex items-center gap-1 hover:text-accent transition-colors cursor-pointer">
                 <AiOutlineLike className="text-lg" />
                 <span className="text-sm">{question?.upvotes}</span>
+              </div>
+              <div className="flex items-center gap-1 hover:text-accent transition-colors cursor-pointer">
+                <BiDislike className="text-lg" />
+                <span className="text-sm">{question?.downvotes}</span>
               </div>
               <div className="flex items-center gap-1 hover:text-success transition-colors cursor-pointer">
                 <FaRegComment className="text-md" />

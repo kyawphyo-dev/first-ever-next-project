@@ -6,7 +6,7 @@ const ROUTES = {
   DASHBOARD: "/dashboard",
   CATEGORIES: "/categories",
   QUESTIONS: "/questions",
-  QUESTIONS_DETAILS: (id: string) => `/questions/${id}`,
+  QUESTION_DETAILS: (id: string) => `/questions/${id}`,
 };
 
 export default ROUTES;

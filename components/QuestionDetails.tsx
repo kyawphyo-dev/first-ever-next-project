@@ -1,8 +1,21 @@
 import { IPopulatedAll } from "@/database/question.model";
 import { formatDistanceToNow } from "date-fns";
+import { AiOutlineLike } from "react-icons/ai";
+import { BiDislike } from "react-icons/bi";
+import { FaRegComment } from "react-icons/fa";
 
 function QuestionDetails(props: IPopulatedAll) {
-  const { title, createdAt, views, content, tags, author } = props;
+  const {
+    title,
+    createdAt,
+    views,
+    content,
+    tags,
+    author,
+    upvotes,
+    downvotes,
+    answers,
+  } = props;
   return (
     <div className="rounded-xl border border-border p-9 bg-card space-y-5 shadow-2xl">
       <h1 className="text-2xl font-bold">{title}</h1>
@@ -30,7 +43,29 @@ function QuestionDetails(props: IPopulatedAll) {
         ))}
       </div>
 
-      <div className="mt-6 prose">{content}</div>
+      <div
+        className="prose max-w-none"
+        dangerouslySetInnerHTML={{ __html: content }}
+      />
+
+      <div className="flex items-center gap-4 text-text-muted">
+        <div className="flex items-center gap-1 hover:text-accent transition-colors cursor-pointer">
+          <AiOutlineLike className="text-lg" />
+          <span className="text-sm">{upvotes}</span>
+        </div>
+        <div className="flex items-center gap-1 hover:text-accent transition-colors cursor-pointer">
+          <BiDislike className="text-lg" />
+          <span className="text-sm">{downvotes}</span>
+        </div>
+        <div className="flex items-center gap-1 hover:text-success transition-colors cursor-pointer">
+          <FaRegComment className="text-md" />
+          <span className="text-sm">{answers.length}</span>
+        </div>
+        {/* <div className="flex items-center gap-1 hover:text-warning transition-colors cursor-pointer">
+                      <MdOutlineVisibility className="text-lg" />
+                      <span className="text-sm">{question?.views}</span>
+                    </div> */}
+      </div>
     </div>
   );
 }
