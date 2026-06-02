@@ -3,6 +3,7 @@ import { formatDistanceToNow } from "date-fns";
 import { AiOutlineLike } from "react-icons/ai";
 import { BiDislike } from "react-icons/bi";
 import { FaRegComment } from "react-icons/fa";
+import MarkDownPreview from "./MarkDownPreview";
 
 function QuestionDetails(props: IPopulatedAll) {
   const {
@@ -43,10 +44,10 @@ function QuestionDetails(props: IPopulatedAll) {
         ))}
       </div>
 
-      <div
-        className="prose max-w-none"
-        dangerouslySetInnerHTML={{ __html: content }}
-      />
+      <div className="mt-6 prose">
+        <MarkDownPreview content={content} />
+        {/* <pre>{content}</pre> */}
+      </div>
 
       <div className="flex items-center gap-4 text-text-muted">
         <div className="flex items-center gap-1 hover:text-accent transition-colors cursor-pointer">

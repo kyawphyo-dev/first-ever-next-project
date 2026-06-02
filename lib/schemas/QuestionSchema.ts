@@ -9,7 +9,7 @@ export const CreateQuestionSchema = z.object({
     .string()
     .min(10, { message: "Content must be at least 10 characters long" }),
   tags: z
-    .array(z.string().min(1).max(15))
+    .array(z.string().min(1).max(20))
     .min(1, { message: "At least one tag is required" })
     .max(5, { message: "Maximum 5 tags are allowed" }),
 });

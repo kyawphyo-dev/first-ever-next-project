@@ -77,7 +77,7 @@ function QuestionForm({
         if (result.success && result.data) {
           toast.success("Question updated successfully");
 
-          router.push(ROUTES.QUESTIONS_DETAILS(result.data.id));
+          router.push(ROUTES.QUESTION_DETAILS(result.data._id as string));
 
           return;
         }
@@ -107,7 +107,7 @@ function QuestionForm({
         // setError("");
         // setNewTag("");
 
-        router.push(ROUTES.QUESTIONS_DETAILS(result.data.id));
+        router.push(ROUTES.QUESTION_DETAILS(result.data._id as string));
 
         return;
       }
