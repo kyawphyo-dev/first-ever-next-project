@@ -1,5 +1,6 @@
 "use client";
 
+import { Markdown } from "tiptap-markdown";
 import { useEditor, EditorContent, useEditorState } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
@@ -46,6 +47,7 @@ const Editor = ({
         bold: {},
         italic: {},
       }),
+      Markdown,
       Heading.configure({
         levels: [1, 2, 3],
       }).extend({
@@ -99,7 +101,12 @@ const Editor = ({
     ],
     content: value,
     onUpdate: ({ editor }) => {
-      onChange(editor?.getHTML() || "");
+      const markdown =
+        (
+          editor.storage as { markdown?: { getMarkdown: () => string } }
+        ).markdown?.getMarkdown() || "";
+
+      onChange(markdown);
     },
     // Don't render immediately on the server to avoid SSR issues
     immediatelyRender: false,
@@ -156,6 +163,7 @@ const Editor = ({
         <div className="flex items-center gap-2 p-2 border-b border-border bg-input-background">
           {/* Bold */}
           <button
+            type="button"
             onClick={() => editor?.chain().focus().toggleBold().run()}
             className={`p-2 rounded hover:bg-hover transition-colors ${
               editor?.isActive("bold")
@@ -169,6 +177,7 @@ const Editor = ({
 
           {/* Italic */}
           <button
+            type="button"
             onClick={() => editor?.chain().focus().toggleItalic().run()}
             className={`p-2 rounded hover:bg-hover transition-colors ${
               editor?.isActive("italic")
@@ -184,6 +193,7 @@ const Editor = ({
 
           {/* Heading */}
           <button
+            type="button"
             onClick={() =>
               editor?.chain().focus().toggleHeading({ level: 1 }).run()
             }
@@ -197,6 +207,7 @@ const Editor = ({
             H1
           </button>
           <button
+            type="button"
             onClick={() =>
               editor?.chain().focus().toggleHeading({ level: 2 }).run()
             }
@@ -210,6 +221,7 @@ const Editor = ({
             H2
           </button>
           <button
+            type="button"
             onClick={() =>
               editor?.chain().focus().toggleHeading({ level: 3 }).run()
             }
@@ -234,6 +246,7 @@ const Editor = ({
           </button>
           {/* List */}
           <button
+            type="button"
             onClick={() => editor?.chain().focus().toggleBulletList().run()}
             className={`p-2 rounded hover:bg-hover transition-colors ${
               editor?.isActive("bulletList")
@@ -245,6 +258,7 @@ const Editor = ({
             <FaListUl />
           </button>
           <button
+            type="button"
             onClick={() => editor?.chain().focus().toggleOrderedList().run()}
             className={`p-2 rounded hover:bg-hover transition-colors ${
               editor?.isActive("orderedList")
@@ -256,9 +270,10 @@ const Editor = ({
             <FaListOl />
           </button>
           <button
+            type="button"
             onClick={() => editor.chain().focus().toggleCodeBlock().run()}
             className={`p-2 rounded hover:bg-hover transition-colors ${
-              editor.isActive("codeBlock")
+              editor?.isActive("codeBlock")
                 ? "bg-accent text-white"
                 : "text-secondary-text"
             }`}
